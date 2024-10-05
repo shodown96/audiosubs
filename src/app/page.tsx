@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { STATES } from "@/lib/constants";
 import { useRef, useState } from "react";
+import toast from "react-hot-toast";
 
 export default function Home() {
   const [generated, setGenerated] = useState("")
@@ -30,6 +31,7 @@ export default function Home() {
       }
     } catch (error) {
       console.log(error)
+      toast.error("Unable to process request, please try again later.")
     } finally {
       setState("")
       setLoading(false)
