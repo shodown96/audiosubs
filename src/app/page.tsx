@@ -1,24 +1,39 @@
 "use client"
-import { generateSRT } from "@/actions/generate-srt";
+import { generateSRT, transcribe } from "@/actions/generate-srt";
+import { UploadFileInput } from "@/components/custom/UploadFileInput";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { convertToBase64 } from "@/lib/utils";
-import { ChangeEvent, useRef, useState } from "react";
+import { STATES } from "@/lib/constants";
+import { useRef, useState } from "react";
 
 export default function Home() {
   const [generated, setGenerated] = useState("")
   const [loading, setLoading] = useState(false);
+  const [state, setState] = useState("");
   // const [loading, setLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const txtRef = useRef<HTMLTextAreaElement>(null);
+  const [files, setFiles] = useState<File[]>([]);
 
   const handleGeneration = async () => {
-    if (!selectedFile) return
+    // if (!selectedFile) return
+    setGenerated("")
+    if (!files.length) return
     setLoading(true)
-    const srt = await generateSRT(selectedFile)
-    setGenerated(srt)
-    setLoading(false)
+    try {
+      setState(STATES.TRANSCRIBING)
+      const transcript = await transcribe(files[0])
+      if (transcript) {
+        setState(STATES.GENERATING)
+        const srt = await generateSRT(transcript)
+        setGenerated(srt)
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setState("")
+      setLoading(false)
+    }
   }
   const handleDownload = () => {
     if (txtRef.current?.value) {
@@ -30,28 +45,54 @@ export default function Home() {
       element.click();
     }
   }
-  const handleSelectedFile = (e: ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files
-    if (files?.length) {
-      setSelectedFile(files[0])
-    }
+
+  const handleClear = () => {
+    setFiles([]);
+    setGenerated("")
   }
+
+  // const handleSelectedFile = (e: ChangeEvent<HTMLInputElement>) => {
+  //   const files = e.target.files
+  //   if (files?.length) {
+  //     setSelectedFile(files[0])
+  //   }
+  // }
 
   return (
     <div className="h-screen flex flex-col justify-center items-center p-20 gap-5">
       <h1 className="text-4xl font-bold">AudioSubs</h1>
       <div className="w-full">
-        <label htmlFor="">Upload Audio File</label>
-        <Input type="file" onChange={handleSelectedFile} className="cursor-pointer" />
-        {selectedFile ? <small>{selectedFile.name}</small> : null}
+        <p className="mb-2">Click or drag and drop your MP3, M4A or MP4 files to upload and generate subtitles.</p>
+        {/* <Input type="file" onChange={handleSelectedFile} className="cursor-pointer" />
+        {selectedFile ? <small>{selectedFile.name}</small> : null} */}
+
+        <UploadFileInput
+          files={files}
+          dropzoneOptions={{
+            multiple: false,
+            maxSize: 1024 * 1024 * 10,
+            accept: {
+              'audio/*': [],
+              'video/mp4': []
+            },
+          }}
+          setFiles={values => {
+            if (!values) return;
+            setFiles(values)
+          }} />
       </div>
+      <p className="w-full">Generated subtitles appear here.</p>
       <Textarea rows={20} ref={txtRef} value={generated} onChange={e => console.log("yay")}></Textarea>
+      <p className="w-full">{state}</p>
       <div className="flex gap-2 w-full">
-        <Button onClick={handleGeneration} loading={loading} disabled={!selectedFile}>
+        <Button onClick={handleGeneration} loading={loading} disabled={!files.length}>
           Generate SRT
         </Button>
         <Button onClick={handleDownload} disabled={!generated}>
           Download SRT
+        </Button>
+        <Button onClick={handleClear} disabled={!generated}>
+          Clear SRT
         </Button>
       </div>
     </div>
