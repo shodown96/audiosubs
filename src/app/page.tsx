@@ -61,7 +61,7 @@ export default function Home() {
   // }
 
   return (
-    <div className="h-screen flex flex-col justify-center items-center p-20 gap-5">
+    <div className="h-screen flex flex-col justify-center items-center p-10 lg:p-20 gap-5">
       <h1 className="text-4xl font-bold">AudioSubs</h1>
       <div className="w-full">
         <p className="mb-2">Click or drag and drop your MP3, M4A or MP4 files to upload and generate subtitles.</p>
@@ -86,7 +86,7 @@ export default function Home() {
       <p className="w-full">Generated subtitles appear here.</p>
       <Textarea rows={20} ref={txtRef} value={generated} onChange={e => console.log("yay")}></Textarea>
       <p className="w-full">{state}</p>
-      <div className="flex gap-2 w-full">
+      <div className="flex gap-2 w-full flex-wrap">
         <Button onClick={handleGeneration} loading={loading} disabled={!files.length}>
           Generate SRT
         </Button>
