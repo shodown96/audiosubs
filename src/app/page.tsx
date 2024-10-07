@@ -4,6 +4,7 @@ import { UploadFileInput } from "@/components/custom/UploadFileInput";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { STATES } from "@/lib/constants";
+import { generateSRTFromUtterances, getUniqueSpeakers } from "@/lib/utils";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -11,6 +12,7 @@ export default function Home() {
   const [generated, setGenerated] = useState("")
   const [loading, setLoading] = useState(false);
   const [state, setState] = useState("");
+  const [speakers, setSpeakers] = useState<string[]>([]);
   // const [loading, setLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const txtRef = useRef<HTMLTextAreaElement>(null);
@@ -24,9 +26,14 @@ export default function Home() {
     try {
       setState(STATES.TRANSCRIBING)
       const transcript = await transcribe(files[0])
-      if (transcript) {
+      if (transcript && transcript.utterances) {
         setState(STATES.GENERATING)
         const srt = await generateSRT(transcript)
+        // const srt = generateSRTFromUtterances(transcript.utterances)
+        const speakers = getUniqueSpeakers(transcript.utterances)
+        if (speakers.length) {
+          setSpeakers(speakers)
+        }
         setGenerated(srt)
       }
     } catch (error) {
@@ -72,7 +79,7 @@ export default function Home() {
           files={files}
           dropzoneOptions={{
             multiple: false,
-            maxSize: 1024 * 1024 * 10,
+            maxSize: 1024 * 1024 * 1024 * 1,
             accept: {
               'audio/*': [],
               'video/mp4': []

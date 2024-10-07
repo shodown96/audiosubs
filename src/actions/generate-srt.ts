@@ -8,8 +8,11 @@ const client = new AssemblyAI({
 export const transcribe = async (audio: FileUploadParams) => {
     let transcript = await client.transcripts.transcribe({
         // audio: "https://storage.googleapis.com/aai-web-samples/espn-bears.m4a",
-        audio
+        audio,
+        // speaker_labels: true,
+        // webhook_url
     });
+    // console.log("transcript", transcript)
     if (transcript.status === 'error') {
         console.error(transcript.error)
         return ""
@@ -20,8 +23,8 @@ export const transcribe = async (audio: FileUploadParams) => {
 
 export const generateSRT = async (transcript: Transcript) => {
     const charsPerCaption = 32;
-    let srt = await client.transcripts.subtitles(transcript.id, "srt");
-    srt = await client.transcripts.subtitles(transcript.id, "srt", charsPerCaption);
+    const srt = await client.transcripts.subtitles(transcript.id, "srt", charsPerCaption);
+    console.log("srt", srt)
     return srt
 }
 // TODO: Handle the realtime transcription
