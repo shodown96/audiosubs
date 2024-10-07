@@ -26,7 +26,7 @@ export default function Home() {
     try {
       setState(STATES.TRANSCRIBING)
       const transcript = await transcribe(files[0])
-      if (transcript && transcript.utterances) {
+      if (transcript) {
         setState(STATES.GENERATING)
         const srt = await generateSRT(transcript)
         // const srt = generateSRTFromUtterances(transcript.utterances)
@@ -107,7 +107,7 @@ export default function Home() {
       </div>
       <p className="w-full">Preview:</p>
       {files.map(file => (
-        <div className="w-full">
+        <div className="w-full" key={file.name}>
           {file.type.startsWith('audio/') ? (
             <audio controls>
               <source src={URL.createObjectURL(file)} type={file.type} />
