@@ -97,7 +97,7 @@ export default function Home() {
             maxSize: 1024 * 1024 * 1024 * 1,
             accept: {
               'audio/*': [],
-              'video/mp4': []
+              'video/*': []
             },
           }}
           setFiles={values => {

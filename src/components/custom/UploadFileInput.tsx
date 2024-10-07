@@ -31,7 +31,7 @@ const FileSvgDraw = () => {
                 &nbsp; or drag and drop
             </p>
             <p className="text-xs text-gray-500 dark:text-gray-400">
-                MP3, M4A or MP4
+                MP3, M4A, MOV or MP4
             </p>
         </>
     );
