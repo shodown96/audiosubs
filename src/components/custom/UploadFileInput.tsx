@@ -1,4 +1,3 @@
-import React from "react";
 import {
     FileInput,
     FileUploader,
@@ -69,21 +68,7 @@ export const UploadFileInput = ({
                         <FileUploaderItem key={i} index={i} className="mb-1">
                             <Paperclip className="h-4 w-4 stroke-current" />
                             <span>{file.name}</span>
-
                         </FileUploaderItem>
-                        {/* {file.type.startsWith('audio/') ? (
-                            <audio controls>
-                                <source src={URL.createObjectURL(file)} type={file.type} />
-                                Your browser does not support the audio element.
-                            </audio>
-                        ) : null}
-
-                        {file.type.startsWith('video/') ? (
-                            <video controls width="250">
-                                <source src={URL.createObjectURL(file)} type={file.type} />
-                                Your browser does not support the video element.
-                            </video>
-                        ) : null} */}
                     </>
                 )) : null}
             </FileUploaderContent>
