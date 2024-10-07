@@ -13,7 +13,7 @@ export default function Home() {
   const [state, setState] = useState("");
   // const [speakers, setSpeakers] = useState<string[]>([]);
   // const [loading, setLoading] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  // const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const txtRef = useRef<HTMLTextAreaElement>(null);
   const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
@@ -49,7 +49,7 @@ export default function Home() {
       const element = document.createElement("a");
       const file = new Blob([txtRef.current?.value], { type: 'text/plain' });
       element.href = URL.createObjectURL(file);
-      element.download = `${selectedFile?.name}.srt`;
+      element.download = `${files[0]?.name}.srt`;
       document.body.appendChild(element); // Required for this to work in FireFox
       element.click();
     }
