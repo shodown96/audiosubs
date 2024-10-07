@@ -1,5 +1,5 @@
 export enum STATES {
-    UPLOADING = "Uploading your audio file...",
-    TRANSCRIBING = "Transcribing the audio to text...",
+    UPLOADING = "Uploading your media file...",
+    TRANSCRIBING = "Transcribing the media to text...",
     GENERATING = "Generating subtitles..."
 }

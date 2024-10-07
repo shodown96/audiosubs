@@ -86,7 +86,7 @@ export default function Home() {
     <div className="h-screen flex flex-col justify-center items-center p-10 lg:p-20 gap-5">
       <h1 className="text-4xl font-bold">AudioSubs</h1>
       <div className="w-full">
-        <p className="mb-2">Click or drag and drop your MP3, M4A or MP4 files to upload and generate subtitles.</p>
+        <p className="mb-2">Click or drag and drop your MP3, M4A, MOV or MP4 files to upload and generate subtitles.</p>
         {/* <Input type="file" onChange={handleSelectedFile} className="cursor-pointer" />
         {selectedFile ? <small>{selectedFile.name}</small> : null} */}
 
