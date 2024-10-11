@@ -64,12 +64,10 @@ export const UploadFileInput = ({
             </FileInput>
             <FileUploaderContent className="min-h-5 overflow-y-auto">
                 {files.length ? files.map((file: File, i: number) => (
-                    <>
-                        <FileUploaderItem key={i} index={i} className="mb-1">
-                            <Paperclip className="h-4 w-4 stroke-current" />
-                            <span>{file.name}</span>
-                        </FileUploaderItem>
-                    </>
+                    <FileUploaderItem key={i} index={i} className="mb-1">
+                        <Paperclip className="h-4 w-4 stroke-current" />
+                        <span>{file.name}</span>
+                    </FileUploaderItem>
                 )) : null}
             </FileUploaderContent>
         </FileUploader>
