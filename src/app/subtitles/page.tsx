@@ -14,6 +14,7 @@ function Subtitles() {
     const [selected, setSelected] = useState<Subtitle | null>(null)
     const [subtitles, setSubtitles] = useState<Subtitle[]>([])
     const [loading, setLoading] = useState(false);
+    const [fetching, setFetching] = useState(false);
     const [speakerText, setSpeakerText] = useState("");
     const router = useRouter()
 
@@ -27,30 +28,40 @@ function Subtitles() {
     }
     useEffect(() => {
         const getSubtitles = async () => {
+            setFetching(true)
             const subtitles = await getSRTs()
             setSubtitles(subtitles)
+            setFetching(false)
         }
         getSubtitles()
     }, [])
     return (
         <div className="h-screen grid grid-cols-12">
-            <div className="bg-primary col-span-7 max-lg:hidden">
-                <div className='p-5 text-white'>
-                    <h4 className='text-3xl font-semibold mb-4 flex gap-2 items-center'>
+            <div className="bg-primary col-span-7 max-lg:col-span-12">
+                <div className='p-5 text-white max-lg:h-[300px] overflow-auto'>
+                    <h4 className='mb-4 flex gap-2 items-center'>
                         <ChevronLeft onClick={() => router.replace(PATHS.NEW)} className='cursor-pointer' />
-                        Your subtitles
-
+                        Back
                     </h4>
-                    {subtitles?.length ? (
-                        <>
-                            {subtitles.map(v => (
-                                <div className='border p-4 cursor-pointer border-white' onClick={() => setSelected(v)}>
-                                    {v.title}
-                                </div>
-                            ))}
-                        </>
+                    <h4 className='text-3xl font-semibold mb-4 flex gap-2 items-center'>
+                        Your subtitles
+                    </h4>
+                    {fetching ? (
+                        <div>Loading....</div>
                     ) : (
-                        <div>No subtitles yet</div>
+                        <>
+                            {subtitles?.length ? (
+                                <>
+                                    {subtitles.map(v => (
+                                        <div className='border p-4 cursor-pointer border-white rounded-lg' onClick={() => setSelected(v)}>
+                                            {v.title}
+                                        </div>
+                                    ))}
+                                </>
+                            ) : (
+                                <div>No subtitles yet</div>
+                            )}
+                        </>
                     )}
                 </div>
             </div>
@@ -60,7 +71,7 @@ function Subtitles() {
                     <Textarea
                         rows={20}
                         value={selected?.content}
-                        className="bg-[#f0f2f4] placeholder:text-[#637588] text-[#111418] rounded min-h-[400px"
+                        className="bg-[#f0f2f4] placeholder:text-[#637588] text-[#111418] rounded min-h-[300px]"
                         placeholder="Generated subtitles appear here, feel free to edit anything that seems off."
                         onChange={e => console.log("yay")}
                     />

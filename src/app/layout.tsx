@@ -12,6 +12,7 @@ import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import { Button } from '@/components/ui/button';
 import { auth } from '@clerk/nextjs/server';
+import { UserMenu } from '@/components/custom/UserMenu';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -39,17 +40,14 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+          <div className="p-3 px-4 bg-primary flex justify-end lg:hidden">
+            {userId ? <UserMenu /> : null}
+          </div>
           {children}
           <Toaster position="top-right" />
-          <div className="absolute bottom-10 left-10">
-            {!userId ? (
-              <SignOutButton >
-              <Button className='bg-blue-600'>Sign out</Button>
-            </SignOutButton>
-            ):null}
+          <div className="absolute bottom-10 left-10 max-lg:hidden">
+          {userId ? <UserMenu /> : null}
           </div>
         </body>
       </html>

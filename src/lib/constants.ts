@@ -10,4 +10,5 @@ export enum PATHS {
     SSO_CALLBACK = "/sso-callback",
     NEW = "/new",
     SUBTITLES = "/subtitles",
+    CHANGE_PASSWORD = "/change-password"
 }

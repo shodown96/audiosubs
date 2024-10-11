@@ -119,7 +119,7 @@ export default function NewSubtitlePage() {
     return (
 
         <>
-            <div className="flex flex-col justify-between h-screen overflow-auto">
+            <div className="flex flex-col justify-between lg:h-screen">
                 <div className="flex-1 flex flex-col justify-center items-center p-10 lg:p-10 gap-5 overflow-auto">
                     <h1 className="text-4xl font-bold">AudioSubs</h1>
                     <div className="w-full">
@@ -161,7 +161,7 @@ export default function NewSubtitlePage() {
                         rows={20}
                         ref={txtRef}
                         value={generated}
-                        className="bg-[#f0f2f4] placeholder:text-[#637588] text-[#111418] rounded min-h-[400px]"
+                        className="bg-[#f0f2f4] placeholder:text-[#637588] text-[#111418] rounded min-h-[300px]"
                         placeholder="Generated subtitles appear here, feel free to edit anything that seems off."
                         onChange={e => console.log("yay")}
                     />
