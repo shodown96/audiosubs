@@ -86,7 +86,7 @@ export default function NewSubtitlePage() {
                     setSaving(false)
                     formik.resetForm()
                     setOpen(false)
-                    router.push(PATHS.SUBTITLES)
+                    // router.push(PATHS.SUBTITLES)
                 }
             }
         },
@@ -161,7 +161,7 @@ export default function NewSubtitlePage() {
                         rows={20}
                         ref={txtRef}
                         value={generated}
-                        className="bg-[#f0f2f4] placeholder:text-[#637588] text-[#111418] rounded min-h-[400px"
+                        className="bg-[#f0f2f4] placeholder:text-[#637588] text-[#111418] rounded min-h-[400px]"
                         placeholder="Generated subtitles appear here, feel free to edit anything that seems off."
                         onChange={e => console.log("yay")}
                     />
