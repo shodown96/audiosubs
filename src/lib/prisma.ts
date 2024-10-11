@@ -1,8 +1,13 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 let prisma: PrismaClient;
 
-if (process.env.NODE_ENV === 'production') {
+declare global {
+  var prisma: PrismaClient | undefined;
+}
+
+if (process.env.NODE_ENV === "production") {
   prisma = new PrismaClient();
 } else {
   if (!global.prisma) {
@@ -10,5 +15,10 @@ if (process.env.NODE_ENV === 'production') {
   }
   prisma = global.prisma;
 }
+
+export const isPrismaError = (
+  error: any,
+): error is PrismaClientKnownRequestError =>
+  error instanceof PrismaClientKnownRequestError;
 
 export default prisma;
