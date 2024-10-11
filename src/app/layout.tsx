@@ -28,6 +28,28 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: "AudioSubs",
   description: "Built by Elijah Soladoye",
+  metadataBase: new URL('https://audiosubs.vercel.app'),
+  openGraph: {
+    url: 'https://audiosubs.vercel.app',
+    type: 'website',
+    title: 'AudioSubs',
+    description: 'Built by Elijah Soladoye',
+    images: [
+      {
+        url: '/img/favicon.ico',
+        width: 800,
+        height: 600,
+        alt: 'AudioSubs',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'AudioSubs',
+    description: 'Built by Elijah Soladoye',
+    images: '/img/favicon.ico',
+    // site: '@your_twitter_handle', // Optional
+  },
 };
 
 export default function RootLayout({
