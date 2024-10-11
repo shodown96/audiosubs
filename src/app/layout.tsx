@@ -11,6 +11,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import { Button } from '@/components/ui/button';
+import { auth } from '@clerk/nextjs/server';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -33,6 +34,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const { userId }: { userId: string | null } = auth()
   return (
     <ClerkProvider>
       <html lang="en">
@@ -42,9 +45,11 @@ export default function RootLayout({
           {children}
           <Toaster position="top-right" />
           <div className="absolute bottom-10 left-10">
-            <SignOutButton >
+            {!userId ? (
+              <SignOutButton >
               <Button className='bg-blue-600'>Sign out</Button>
             </SignOutButton>
+            ):null}
           </div>
         </body>
       </html>

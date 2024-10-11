@@ -14,7 +14,7 @@ import toast from "react-hot-toast";
 
 import { useFormik } from "formik";
 import { Input } from "@/components/ui/input";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 export default function NewSubtitlePage() {
     const { user } = useUser();
