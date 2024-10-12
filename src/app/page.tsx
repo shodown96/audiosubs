@@ -13,5 +13,8 @@ export default function Home() {
     redirect(PATHS.NEW)
   }, [router, user]);
 
-  return null;
+  return (
+    <div className="h-screen bg-primary">
+    </div>
+  );
 }
