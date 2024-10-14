@@ -53,7 +53,7 @@ function Subtitles() {
                             {subtitles?.length ? (
                                 <>
                                     {subtitles.map(v => (
-                                        <div className='border p-4 cursor-pointer border-white rounded-lg' onClick={() => setSelected(v)}>
+                                        <div className='border p-4 mb-4 cursor-pointer border-white rounded-lg' onClick={() => setSelected(v)}>
                                             {v.title}
                                         </div>
                                     ))}
