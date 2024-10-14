@@ -8,7 +8,7 @@ import { PATHS } from '@/lib/constants'
 import { Subtitle } from '@prisma/client'
 import { ChevronLeft } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 function Subtitles() {
     const [selected, setSelected] = useState<Subtitle | null>(null)
@@ -17,6 +17,7 @@ function Subtitles() {
     const [fetching, setFetching] = useState(false);
     const [speakerText, setSpeakerText] = useState("");
     const router = useRouter()
+    const txtRef = useRef<HTMLTextAreaElement>(null);
 
     const handleGeneration = async () => {
         if (selected) {
@@ -24,6 +25,17 @@ function Subtitles() {
             const speakerText = await getSpeakers(selected?.id);
             setSpeakerText(speakerText)
             setLoading(false)
+        }
+    }
+
+    const handleDownload = () => {
+        if (txtRef.current?.value) {
+            const element = document.createElement("a");
+            const file = new Blob([txtRef.current?.value], { type: 'text/plain' });
+            element.href = URL.createObjectURL(file);
+            element.download = `${selected?.title}.srt`;
+            document.body.appendChild(element); // Required for this to work in FireFox
+            element.click();
         }
     }
     useEffect(() => {
@@ -69,12 +81,16 @@ function Subtitles() {
                 <div className="flex flex-col gap-2">
                     <h4 className='text-3xl font-semibold mb-5'>{selected?.title}</h4>
                     <Textarea
+                        ref={txtRef}
                         rows={20}
                         value={selected?.content}
                         className="bg-[#f0f2f4] placeholder:text-[#637588] text-[#111418] rounded min-h-[300px]"
                         placeholder="Generated subtitles appear here, feel free to edit anything that seems off."
                         onChange={e => console.log("yay")}
                     />
+                    <Button onClick={handleDownload} disabled={!selected?.content}>
+                        Download SRT
+                    </Button>
                     {/* <Button className="bg-blue-600" onClick={handleGeneration} loading={loading} disabled={!selected}>
                         Generate Speaker Text
                     </Button>
