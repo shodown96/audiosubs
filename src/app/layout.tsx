@@ -63,14 +63,15 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-          <div className="p-3 px-4 bg-primary flex justify-end lg:hidden">
+          <div className="p-3 px-4 bg-primary flex justify-between items-center border-b shadow-xl">
+            <h4 className='text-xl text-white'>AudioSubs</h4>
             {userId ? <UserMenu /> : null}
           </div>
           {children}
           <Toaster position="top-right" />
-          <div className="absolute bottom-10 left-10 max-lg:hidden">
+          {/* <div className="absolute bottom-10 left-10 max-lg:hidden">
           {userId ? <UserMenu /> : null}
-          </div>
+          </div> */}
         </body>
       </html>
     </ClerkProvider>

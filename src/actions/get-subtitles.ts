@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma"
 import { auth } from "@clerk/nextjs/server"
 import { Subtitle } from "@prisma/client"
 
-export const getSRTs = async (): Promise<Subtitle[]> => {
+export const getSRTs = async (page = 1, pageSize = 5): Promise<Subtitle[]> => {
     try {
         const { userId }: { userId: string | null } = auth()
         if (!userId) {
@@ -12,7 +12,9 @@ export const getSRTs = async (): Promise<Subtitle[]> => {
             return []
         };
         const subtitles = await prisma.subtitle.findMany({
-            where: { userId }
+            where: { userId },
+            skip: (page - 1) * pageSize,
+            take: pageSize,
         })
         return subtitles
     } catch (error) {

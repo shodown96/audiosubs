@@ -8,7 +8,19 @@ import { PATHS } from '@/lib/constants'
 import { Subtitle } from '@prisma/client'
 import { ChevronLeft } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+
+import {
+    Pagination,
+    PaginationContent,
+    // PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination";
+
 import React, { useEffect, useRef, useState } from 'react'
+import { cn } from '@/lib/utils'
 
 function Subtitles() {
     const [selected, setSelected] = useState<Subtitle | null>(null)
@@ -18,6 +30,10 @@ function Subtitles() {
     const [speakerText, setSpeakerText] = useState("");
     const router = useRouter()
     const txtRef = useRef<HTMLTextAreaElement>(null);
+    const [pagination, setPagination] = useState({
+        page: 1,
+        total: 1,
+    });
 
     const handleGeneration = async () => {
         if (selected) {
@@ -38,10 +54,33 @@ function Subtitles() {
             element.click();
         }
     }
+
+    const previous = (pagination?.page || 0) - 1 > 0;
+    const next = (pagination?.total || 0) - (pagination?.page || 0) > 0;
+
+    const handleChangePage = (mode: "next" | "previous") => {
+
+
+        if (mode == "next" && next) {
+
+            setPagination((rest) => ({
+                ...rest,
+                page: pagination.page + 1,
+            }));
+        }
+        if (mode == "previous" && previous) {
+
+            setPagination((rest) => ({
+                ...rest,
+                page: pagination.page - 1,
+            }));
+        }
+    };
+
     useEffect(() => {
         const getSubtitles = async () => {
             setFetching(true)
-            const subtitles = await getSRTs()
+            const subtitles = await getSRTs(pagination.page)
             setSubtitles(subtitles)
             setFetching(false)
         }
@@ -50,7 +89,7 @@ function Subtitles() {
     return (
         <div className="h-screen grid grid-cols-12">
             <div className="bg-primary col-span-7 max-lg:col-span-12">
-                <div className='p-5 text-white max-lg:h-[300px] overflow-auto'>
+                <div className='p-10 text-white max-lg:h-[300px] overflow-auto'>
                     <h4 className='mb-4 flex gap-2 items-center'>
                         <ChevronLeft onClick={() => router.replace(PATHS.NEW)} className='cursor-pointer' />
                         Back
@@ -69,6 +108,29 @@ function Subtitles() {
                                             {v.title}
                                         </div>
                                     ))}
+                                    <Pagination className='text-white justify-end'>
+                                        <PaginationContent>
+                                            <PaginationItem
+                                                onClick={() => handleChangePage("previous")}
+                                                className={cn(previous ?? "opacity-50 hover:bg-transparent")}>
+                                                <PaginationPrevious href="#" />
+                                            </PaginationItem>
+
+                                            <PaginationItem>
+                                                <PaginationLink href="#">{pagination.page}</PaginationLink>
+                                            </PaginationItem>
+
+                                            <PaginationItem
+                                                onClick={() => handleChangePage("next")}
+                                                className={cn(next ?? "opacity-50 hover:bg-transparent")}>
+                                                <PaginationNext href="#" />
+                                            </PaginationItem>
+
+                                            <div className="text-sm">
+                                                {pagination.total} {pagination.total === 1 ? "page" : "pages"}
+                                            </div>
+                                        </PaginationContent>
+                                    </Pagination>
                                 </>
                             ) : (
                                 <div>No subtitles yet</div>
@@ -76,6 +138,8 @@ function Subtitles() {
                         </>
                     )}
                 </div>
+
+
             </div>
             <div className="col-span-5 max-lg:col-span-12 p-5">
                 <div className="flex flex-col gap-2">
@@ -104,7 +168,7 @@ function Subtitles() {
                     /> */}
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 
