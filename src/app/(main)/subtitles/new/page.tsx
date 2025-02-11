@@ -10,11 +10,10 @@ import { useUser } from "@clerk/nextjs";
 import { Transcript } from "assemblyai";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
-
-import { Modal } from "@/components/ui/modal";
 import { Input } from "@/components/ui/input";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
+import { Modal } from "@/components/custom/modal";
 
 export default function NewSubtitlePage() {
     const { user } = useUser();
