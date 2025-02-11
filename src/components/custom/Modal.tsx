@@ -1,17 +1,13 @@
 import {
     AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
     AlertDialogContent,
     AlertDialogDescription,
-    AlertDialogFooter,
     AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
+    AlertDialogTitle
 } from "@/components/ui/alert-dialog"
 import { XIcon } from "lucide-react"
 
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 interface ModalProps {
     open: boolean,
     title: string,
