@@ -1,19 +1,19 @@
 "use client"
 import { generateSRT, transcribe } from "@/actions/generate-srt";
 import { storeSRT } from "@/actions/store-srt";
+import { Modal } from "@/components/custom/modal";
 import { UploadFileInput } from "@/components/custom/upload-file-input";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { STATES } from "@/lib/constants";
 import { SubtitleParamsSchema, SubtitleParamsType } from "@/lib/validations";
 import { useUser } from "@clerk/nextjs";
 import { Transcript } from "assemblyai";
-import { useEffect, useRef, useState } from "react";
-import toast from "react-hot-toast";
-import { Input } from "@/components/ui/input";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
-import { Modal } from "@/components/custom/modal";
+import { useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
 
 export default function NewSubtitlePage() {
     const { user } = useUser();
