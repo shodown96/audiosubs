@@ -1,7 +1,7 @@
 "use client"
 import { generateSRT, transcribe } from "@/actions/generate-srt";
 import { storeSRT } from "@/actions/store-srt";
-import { Modal } from "@/components/custom/modal";
+import { Modal } from "@/components/custom/custom-modal";
 import { UploadFileInput } from "@/components/custom/upload-file-input";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
