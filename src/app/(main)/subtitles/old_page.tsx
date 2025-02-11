@@ -80,8 +80,8 @@ function Subtitles() {
     useEffect(() => {
         const getSubtitles = async () => {
             setFetching(true)
-            const subtitles = await getSRTs(pagination.page)
-            setSubtitles(subtitles)
+            const result = await getSRTs({ query: { ...pagination, search: "" } })
+            setSubtitles(result?.data?.items || [])
             setFetching(false)
         }
         getSubtitles()
@@ -91,7 +91,7 @@ function Subtitles() {
             <div className="bg-primary col-span-7 max-lg:col-span-12">
                 <div className='p-10 text-white max-lg:h-[300px] overflow-auto'>
                     <h4 className='mb-4 flex gap-2 items-center'>
-                        <ChevronLeft onClick={() => router.replace(PATHS.NEW)} className='cursor-pointer' />
+                        <ChevronLeft onClick={() => router.replace(PATHS.NEW_SUBTITLE)} className='cursor-pointer' />
                         Back
                     </h4>
                     <h4 className='text-3xl font-semibold mb-4 flex gap-2 items-center'>

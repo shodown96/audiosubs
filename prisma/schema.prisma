@@ -7,8 +7,11 @@ generator client {
 datasource db {
     provider = "postgresql"
     url      = env("POSTGRES_PRISMA_URL") // uses connection pooling
-    //   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
+
+// Ideally there should be a User Model to abstract users from clerk here 
+//but since this project is just for illustrative purposes, 
+// I'm not using such and defending fully on clerk to manage users
 
 model Subtitle {
     id              String @id @default(cuid())

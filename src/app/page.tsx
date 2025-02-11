@@ -10,7 +10,7 @@ export default function Home() {
 
   useEffect(() => {
     if (!user) redirect(PATHS.SIGN_IN);
-    redirect(PATHS.NEW)
+    redirect(PATHS.DASHBOARD)
   }, [router, user]);
 
   return (

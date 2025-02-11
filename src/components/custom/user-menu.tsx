@@ -8,8 +8,8 @@ import {
 import { SignOutButton } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
 import { LogOutIcon } from "lucide-react";
-import { UserMenuItem } from "./UserMenuItem";
-import { UserMenuTrigger } from "./UserMenuTrigger";
+import { UserMenuItem } from "./user-menu-item";
+import { UserMenuTrigger } from "./user-menu-trigger";
 import { redirect } from "next/navigation";
 import { PATHS } from "@/lib/constants";
 

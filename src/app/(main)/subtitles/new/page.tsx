@@ -1,8 +1,8 @@
 "use client"
 import { generateSRT, transcribe } from "@/actions/generate-srt";
 import { storeSRT } from "@/actions/store-srt";
-import Modal from "@/components/custom/Modal";
-import { UploadFileInput } from "@/components/custom/UploadFileInput";
+import Modal from "@/components/custom/modal";
+import { UploadFileInput } from "@/components/custom/upload-file-input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { PATHS, STATES } from "@/lib/constants";
@@ -23,7 +23,6 @@ export default function NewSubtitlePage() {
     const [loading, setLoading] = useState(false);
     const [saving, setSaving] = useState(false);
     const [open, setOpen] = useState(false);
-    const [state, setState] = useState("");
     const router = useRouter()
     // const [speakers, setSpeakers] = useState<string[]>([]);
     // const [loading, setLoading] = useState(false);
@@ -39,12 +38,14 @@ export default function NewSubtitlePage() {
         if (!files.length) return
         setLoading(true)
         try {
-            setState(STATES.TRANSCRIBING)
+            const toastId = toast.loading(STATES.TRANSCRIBING)
             const transcript = await transcribe(files[0], user?.id)
+            toast.dismiss(toastId)
             if (transcript) {
                 setTranscripted(transcript)
-                setState(STATES.GENERATING)
+                const toastId = toast.loading(STATES.GENERATING)
                 const srt = await generateSRT(transcript)
+                toast.dismiss(toastId)
                 // const srt = generateSRTFromUtterances(transcript.utterances)
                 // const speakers = getUniqueSpeakers(transcript.utterances)
                 // if (speakers.length) {
@@ -56,7 +57,6 @@ export default function NewSubtitlePage() {
             console.log(error)
             toast.error("Unable to process request, please try again later.")
         } finally {
-            setState("")
             setLoading(false)
         }
     }
@@ -119,9 +119,8 @@ export default function NewSubtitlePage() {
     return (
 
         <>
-            <div className="flex flex-col justify-between lg:h-screen">
+            <div className="flex flex-col justify-between">
                 <div className="flex-1 flex flex-col justify-center items-center p-10 lg:p-10 gap-5 overflow-auto">
-                    <h1 className="text-4xl font-bold">AudioSubs</h1>
                     <div className="w-full">
                         <p className="mb-2">Click or drag and drop your MP3, M4A, MOV or MP4 files to upload and generate subtitles.</p>
                         <UploadFileInput
@@ -182,8 +181,6 @@ export default function NewSubtitlePage() {
                     </div>
 
                 </div>
-
-                <div className="w-full p-1 min-h-[32px] bg-[#f0f2f4]">{state}</div>
             </div>
             <Modal open={open} setOpen={setOpen} title="Save Subtitle">
                 <form onSubmit={formik.handleSubmit}>

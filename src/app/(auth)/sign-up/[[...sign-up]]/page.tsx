@@ -4,7 +4,7 @@ import { SignUp } from '@clerk/nextjs'
 export default function Page() {
   return (
     <div className='flex justify-center items-center h-screen bg-primary'>
-      <SignUp fallbackRedirectUrl={PATHS.NEW} />
+      <SignUp fallbackRedirectUrl={PATHS.DASHBOARD} />
     </div>
   )
 }

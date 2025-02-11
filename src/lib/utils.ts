@@ -50,6 +50,59 @@ export const getUniqueSpeakers = (utterances: TranscriptUtterance[]) => {
   utterances.forEach(utterance => {
     speakersSet.add(utterance.speaker);
   });
-  
+
   return Array.from(speakersSet);
 }
+
+export const getBreadcrumbs = (pathname: string) => {
+  // Split the pathname into segments
+  const segments = pathname.split("/").filter((segment) => segment !== "");
+
+  // Create breadcrumbs based on the segments
+  const breadcrumbs = segments
+    // .filter((x) => x !== "dashboard")
+    .map((segment, index) => {
+      const path = `/${segments.slice(0, index + 1).join("/")}`;
+      return {
+        text: segment,
+        path: path === "" ? "/" : path,
+      };
+    });
+
+  return breadcrumbs;
+};
+
+export const getLimitedText = (text = "", limit = 50) => {
+  if (text.length > 0) {
+    if (text.length > limit) {
+      return `${text.split("").slice(0, limit).join("")}...`;
+    }
+    return text
+  }
+  return ""
+};
+
+export const paginateItems = ({
+  page,
+  pageSize,
+  items,
+  total,
+}: {
+  page: number;
+  pageSize: number;
+  items: any;
+  total: number;
+}) => {
+  const totalPages = total ? Math.ceil(total / pageSize) : 0;
+  const data: any = {
+    items,
+    pageSize,
+    totalPages,
+    currentPage: page,
+    total: total,
+  };
+  return data;
+};
+
+export const delayDebounceFn = (callBack: () => void) =>
+  setTimeout(callBack, 300);
