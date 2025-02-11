@@ -1,7 +1,6 @@
 "use client"
 import { generateSRT, transcribe } from "@/actions/generate-srt";
 import { storeSRT } from "@/actions/store-srt";
-import Modal from "@/components/custom/modal";
 import { UploadFileInput } from "@/components/custom/upload-file-input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -12,6 +11,7 @@ import { Transcript } from "assemblyai";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 
+import { Modal } from "@/components/ui/modal";
 import { Input } from "@/components/ui/input";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";

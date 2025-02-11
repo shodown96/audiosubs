@@ -14,7 +14,7 @@ interface ModalProps {
     children: ReactNode
     setOpen: (v: boolean) => void
 }
-function Modal({ open, title, children, setOpen }: ModalProps) {
+export const Modal = ({ open, title, children, setOpen }: ModalProps) => {
     return (
         <AlertDialog open={open}>
             <div className="p-1">
@@ -35,5 +35,3 @@ function Modal({ open, title, children, setOpen }: ModalProps) {
 
     )
 }
-
-export default Modal
