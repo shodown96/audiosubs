@@ -28,13 +28,11 @@ export function TransacribeForm({
     onSubmitted: (subtitle: ClientSubtitle) => void
     goBack: () => void
 }) {
-    const { user } = useUser()
     const txtRef = useRef<HTMLTextAreaElement>(null);
     const [generated, setGenerated] = useState("")
     const [transcripted, setTranscripted] = useState<Transcript | null>(null)
     const [loading, setLoading] = useState(false);
     const [saving, setSaving] = useState(false);
-    const [open, setOpen] = useState(false);
 
     const handleRestart = () => {
         window.location.reload()
@@ -118,7 +116,7 @@ export function TransacribeForm({
 
     return (
         <div>
-            <Button onClick={goBack} variant={"ghost"} className='mb-4'>
+            <Button onClick={loading ? undefined : goBack} variant={"ghost"} className='mb-4'>
                 <ChevronLeft />  Back
             </Button>
             <h4 className='text-lg'>Generated Subtitle</h4>
@@ -146,17 +144,17 @@ export function TransacribeForm({
                 />
 
                 <div className="flex gap-2 w-full flex-wrap">
-                    <Button type='button' className="bg-blue-600" onClick={handleGeneration} loading={loading} disabled={!updatedValues?.file}>
+                    <Button type='button' className="bg-blue-600" onClick={handleGeneration} loading={loading || saving} disabled={!updatedValues?.file}>
                         Re-generate SRT
                     </Button>
-                    <Button type='button' onClick={handleDownload} disabled={!generated}>
+                    <Button type='button' onClick={handleDownload} disabled={!generated || saving}>
                         Download SRT
                     </Button>
-                    <Button type='button' onClick={handleRestart} disabled={!generated}>
+                    <Button type='button' onClick={handleRestart} disabled={!generated || saving}>
                         Restart
                     </Button>
                     {updatedValues?.saveFile ?
-                        <Button type='submit' disabled={!generated}>
+                        <Button type='submit' disabled={!generated} loading={loading || saving}>
                             Save SRT
                         </Button> : null
                     }

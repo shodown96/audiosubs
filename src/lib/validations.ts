@@ -17,6 +17,14 @@ const SubtitleParams = z.object({
 export const SubtitleParamsSchema = toFormikValidationSchema(SubtitleParams);
 export type SubtitleParamsType = z.infer<typeof SubtitleParams>;
 
+const OldSubtitleParams = z.object({
+    title: z.string({ required_error: "Please enter a title." }),
+    saveFile: z.boolean().optional(),
+});
+
+export const OldSubtitleParamsSchema = toFormikValidationSchema(OldSubtitleParams);
+export type OldSubtitleParamsType = z.infer<typeof OldSubtitleParams>;
+
 const SubtitleMediaParams = z
     .object({
         saveFile: z.boolean().optional(),

@@ -10,7 +10,7 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { STATES } from "@/lib/constants";
 import { convertToBase64 } from "@/lib/utils";
-import { SubtitleParamsSchema, SubtitleParamsType } from "@/lib/validations";
+import { OldSubtitleParamsSchema, OldSubtitleParamsType } from "@/lib/validations";
 import { DBFile } from "@/types/common";
 import { useUser } from "@clerk/nextjs";
 import { Transcript } from "assemblyai";
@@ -139,9 +139,9 @@ export default function NewSubtitlePage() {
         setGenerated("")
     }
 
-    const formik = useFormik<SubtitleParamsType>({
+    const formik = useFormik<OldSubtitleParamsType>({
         initialValues: { title: "", saveFile: true },
-        onSubmit: async ({ title, saveFile }: SubtitleParamsType) => {
+        onSubmit: async ({ title, saveFile }: OldSubtitleParamsType) => {
             if (transcripted && generated && file) {
                 setSaving(true)
                 const saved = await createSubtitle({
@@ -162,7 +162,7 @@ export default function NewSubtitlePage() {
             }
         },
         validateOnBlur: true,
-        validationSchema: SubtitleParamsSchema,
+        validationSchema: OldSubtitleParamsSchema,
     });
 
     // const handleSelectedFile = (e: ChangeEvent<HTMLInputElement>) => {
