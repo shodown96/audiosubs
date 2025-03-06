@@ -25,11 +25,12 @@ import {
   PaginationItem,
   PaginationLink,
   PaginationNext,
-  PaginationPrevious,
+  PaginationPrevious
 } from "@/components/ui/pagination";
 import { cn } from "@/lib/utils";
 
 interface DataTableProps<TData, TValue> {
+  loading?: boolean;
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   rowSelection?: any,
@@ -42,6 +43,7 @@ interface DataTableProps<TData, TValue> {
 }
 
 export function DataTable<TData, TValue>({
+  loading,
   columns,
   data,
   pagination,
@@ -108,14 +110,26 @@ export function DataTable<TData, TValue>({
                 </TableRow>
               ))
             ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
+              <>
+                {loading ? (
+                  <TableRow>
+                    <TableCell
+                      colSpan={columns.length}
+                      className="h-24 text-center"
+                    >
+                      Loading
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={columns.length}
+                      className="h-24 text-center"
+                    >
+                      No results.
+                    </TableCell>
+                  </TableRow>)}
+              </>
             )}
           </TableBody>
         </Table>
@@ -134,9 +148,6 @@ export function DataTable<TData, TValue>({
             <PaginationItem>
               <PaginationLink href="#">{pagination.currentPage}</PaginationLink>
             </PaginationItem>
-            {/* <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem> */}
 
             <PaginationItem
               onClick={() => handleChangePage("next")}

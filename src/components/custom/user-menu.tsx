@@ -5,13 +5,12 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { PATHS } from "@/lib/constants";
 import { SignOutButton } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
 import { LogOutIcon } from "lucide-react";
 import { UserMenuItem } from "./user-menu-item";
 import { UserMenuTrigger } from "./user-menu-trigger";
-import { redirect } from "next/navigation";
-import { PATHS } from "@/lib/constants";
 
 export const UserMenu = async () => {
   const user = await currentUser();

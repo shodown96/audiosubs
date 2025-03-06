@@ -1,8 +1,13 @@
 import { FilterParams, Pagination } from '@/types/common';
 import { useState } from 'react';
 import { DEFAULT_PAGE_SIZE } from '../constants';
+import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
+import { objectToQueryString } from '../utils';
 
 function useAPIQuery() {
+    const router = useRouter()
+    const pathname = usePathname()
     const [query, setQuery] = useState<FilterParams>({
         pageSize: DEFAULT_PAGE_SIZE,
         page: 1,
@@ -19,8 +24,11 @@ function useAPIQuery() {
         setPagination({ ...pagination, totalPages, currentPage, total })
     }
 
-    const setQ = (values: Partial<FilterParams>) => {
-        setQuery({ ...query, ...values })
+    const setQ = (params: Partial<FilterParams>) => {
+        const { pageSize, ...rest } = params
+        const queryString = objectToQueryString(rest)
+        router.push(`${pathname}?${queryString}`)
+        setQuery({ ...query, ...params })
     }
 
     return {

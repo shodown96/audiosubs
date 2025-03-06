@@ -6,6 +6,7 @@ export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   labelStyle?: string;
+  containerClassName?: string;
   supportingText?: string;
   supportingTextStyle?: string;
   touched?: boolean;
@@ -13,9 +14,9 @@ export interface InputProps
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, label, labelStyle = "", type, error, touched, ...props }, ref) => {
+  ({ className, containerClassName = "", label, labelStyle = "", type, error, touched, ...props }, ref) => {
     return (
-      <div>
+      <div className={containerClassName}>
         {label && (
           <p className={cn("text-sm font-medium w-full text-left", labelStyle)}>
             {label}

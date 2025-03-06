@@ -10,7 +10,7 @@ import { Prisma } from "@prisma/client"
 
 export const getSRTs = async ({ query }: { query: FilterParams }): Promise<GetSubtitlesResponse | null> => {
     try {
-        const { userId }: { userId: string | null } = auth()
+        const { userId }: { userId: string | null }= await auth()
         if (!userId) throw new Error("No user found")
 
         const {

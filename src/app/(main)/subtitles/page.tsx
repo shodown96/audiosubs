@@ -1,23 +1,27 @@
 "use client"
 
 
+import { getSRTs } from '@/actions/subtitles/get-subtitles'
 import { DataTable } from '@/components/custom/data-table'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { PATHS } from '@/lib/constants'
 import useAPIQuery from '@/lib/hooks/use-query'
+import { delayDebounceFn } from '@/lib/utils'
+import { PageProps } from '@/types/common'
+import { Subtitle } from '@prisma/client'
 import Link from 'next/link'
 import { ChangeEvent, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { columns } from './columns'
-import { Subtitle } from '@prisma/client'
-import { getSRTs } from '@/actions/get-subtitles'
-import { delayDebounceFn } from '@/lib/utils'
 
-export default function SubtitlesPage() {
+export default function SubtitlesPage({
+    searchParams,
+}: PageProps) {
     const { query, setQuery, pagination, setPagination } = useAPIQuery()
     const [subtitles, setSubtitles] = useState<Subtitle[]>([]);
     const [refreshing, setRefreshing] = useState(false)
+    const [loading, setLoading] = useState(true)
 
     const fetchSubtitles = async () => {
         try {
@@ -32,15 +36,19 @@ export default function SubtitlesPage() {
             }
         } catch (error: any) {
             toast.error(error?.message);
+        } finally {
+            if (loading) {
+                setLoading(false)
+            }
         }
     };
 
     const handleRefresh = async () => {
+        setRefreshing(true)
         setQuery({
             page: 1,
             search: "",
         });
-        setRefreshing(true)
         await fetchSubtitles()
         setRefreshing(false)
     };
@@ -55,24 +63,18 @@ export default function SubtitlesPage() {
         setQuery({ page });
     };
 
-    useEffect(() => {
-        if (!subtitles.length) {
-            fetchSubtitles();
-        }
-    }, [query, subtitles.length]);
 
     useEffect(() => {
-        if (query?.search.length) {
+        if (searchParams?.search?.length) {
             const delayDebounce = delayDebounceFn(fetchSubtitles);
             return () => clearTimeout(delayDebounce);
-        } else if (query.page) {
+        } else if (searchParams.page || query.page) {
             fetchSubtitles()
         }
-    }, [query.search, query.page]);
+    }, [searchParams]);
 
     return (
         <div>
-
             <div>
                 <div className="flex justify-between max-md:flex-col gap-2">
                     <div className="flex gap-2">
@@ -92,6 +94,7 @@ export default function SubtitlesPage() {
                     </div>
                 </div>
                 <DataTable
+                    loading={loading}
                     columns={columns}
                     data={subtitles}
                     pagination={{

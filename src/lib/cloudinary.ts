@@ -35,14 +35,15 @@ export const uploadMedia = async (file: string, folder = "") => {
     try {
         const environment = process.env.NODE_ENV || "development"
         const uploaded = await cloudinary.uploader.upload(file, {
-            folder: `/sensenstyleapp/${environment}/${folder}`
+            folder: `/mediasubs/${environment}/${folder}`,
+            resource_type: "raw" //to allow audio files
         });
-        // const dbFile = await prisma.file.create({
-        //     data: { url: uploaded.secure_url }
-        // })
-        return true
-        // return dbFile
+        const dbFile = await prisma.file.create({
+            data: { url: uploaded.secure_url }
+        })
+        return dbFile
     } catch (error: any) {
+        console.log("uploadMedia ", error)
         throw new Error(error);
     }
 }

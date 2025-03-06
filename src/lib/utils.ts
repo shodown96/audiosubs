@@ -1,10 +1,40 @@
 import { TranscriptUtterance } from "assemblyai";
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
+import { format as formatFNS } from "date-fns";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
+
+
+export const formatString = (...args: any) => {
+  let i = 1;
+  const str = args[0];
+  return str.replace(/{}/g, function () {
+    return typeof args[i] != 'undefined' ? args[i++] : '';
+  });
+}
+
+export const formatDate = (date: string | Date) => {
+  if (!date) return ""
+  return formatFNS(date, "do MMM, yyyy");
+};
+
+export const objectToQueryString = (obj: Record<string, any>) => {
+  const keyValuePairs = [];
+
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key) && obj[key]) {
+      keyValuePairs.push(
+        encodeURIComponent(key) + "=" + encodeURIComponent(obj[key]),
+      );
+    }
+  }
+
+  return keyValuePairs.join("&");
+};
+
 
 export const convertToBase64 = async (file: File) => {
   /*

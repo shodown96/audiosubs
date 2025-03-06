@@ -4,11 +4,15 @@ import {
     FileUploaderContent,
     FileUploaderItem,
 } from "@/components/ui/file-uploader";
+import { cn, getLimitedText } from "@/lib/utils";
 
 import { Paperclip } from "lucide-react";
 import { DropzoneOptions } from "react-dropzone";
 
-const FileSvgDraw = () => {
+const FileSvgDraw = ({
+    label = "Click to upload or drag and drop",
+    acceptedText = ""
+}) => {
     return (
         <>
             <svg
@@ -27,11 +31,12 @@ const FileSvgDraw = () => {
                 />
             </svg>
             <p className="mb-1 text-sm text-gray-500 dark:text-gray-400">
-                <span className="font-semibold">Click to upload</span>
-                &nbsp; or drag and drop
+                {/* <span className="font-semibold">Click to upload</span>
+                &nbsp; or drag and drop */}
+                {label}
             </p>
             <p className="text-xs text-gray-500 dark:text-gray-400">
-                MP3, M4A, MOV or MP4
+                {acceptedText}
             </p>
         </>
     );
@@ -40,38 +45,51 @@ const FileSvgDraw = () => {
 export const UploadFileInput = ({
     files,
     setFiles,
-    dropzoneOptions
+    dropzoneOptions,
+    label,
+    acceptedText,
+    labelStyle,
 }: {
     files: File[],
     setFiles: (value: File[] | null) => void,
-    dropzoneOptions: DropzoneOptions
+    dropzoneOptions: DropzoneOptions,
+    acceptedText?: string,
+    label?: string,
+    labelStyle?: string
 }) => {
     return (
-        <FileUploader
-            value={files}
-            onValueChange={setFiles}
-            dropzoneOptions={dropzoneOptions}
-            className=""
-        >
-            <FileInput className="border border-primary border-dashed">
-                {/* <Button variant={"outline"}>Upload a file</Button> */}
-                {/* <div className="flex items-center justify-center h-32 w-full border bg-background rounded-md">
+        <div className="w-full cursor-pointer">
+            {label && (
+                <p className={cn("text-sm font-medium w-full text-left mb-1", labelStyle)}>
+                    {label}
+                </p>
+            )}
+            <FileUploader
+                value={files}
+                onValueChange={setFiles}
+                dropzoneOptions={dropzoneOptions}
+                className=""
+            >
+                <FileInput className="border border-primary border-dashed">
+                    {/* <Button variant={"outline"}>Upload a file</Button> */}
+                    {/* <div className="flex items-center justify-center h-32 w-full border bg-background rounded-md">
                     <p className="text-gray-400">Drop files here</p>
                 </div> */}
-                <div className="flex items-center justify-center flex-col pt-3 pb-4 w-full ">
-                    <FileSvgDraw />
-                </div>
-            </FileInput>
-            <FileUploaderContent className="min-h-5 overflow-y-auto">
-                {files.length ? files.map((file: File, i: number) => (
-                    <FileUploaderItem key={i} index={i} className="mb-1">
-                        <Paperclip className="h-4 w-4 stroke-current" />
-                        <span>{file.name}</span>
-                    </FileUploaderItem>
-                )) : null}
-            </FileUploaderContent>
-        </FileUploader>
+                    <div className="flex items-center justify-center flex-col pt-3 pb-4 w-full ">
+                        <FileSvgDraw
+                            label={label}
+                            acceptedText={acceptedText} />
+                    </div>
+                </FileInput>
+                <FileUploaderContent className="min-h-5 overflow-y-auto">
+                    {files.length ? files.map((file: File, i: number) => (
+                        <div key={i} className="mb-1 flex gap-2">
+                            <Paperclip className="h-4 w-4 stroke-current" />
+                            <span>{getLimitedText(file.name, 50)}</span>
+                        </div>
+                    )) : null}
+                </FileUploaderContent>
+            </FileUploader>
+        </div>
     )
 }
-// TODO: Find a substitute for this URL.createObjectURL(file)
-

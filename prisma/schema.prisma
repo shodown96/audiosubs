@@ -14,10 +14,25 @@ datasource db {
 // I'm not using such and defending fully on clerk to manage users
 
 model Subtitle {
-    id              String @id @default(cuid())
+    id              String     @id @default(cuid())
     title           String
     content         String
+    speakerText     String?
     userId          String
-    mediaUrl        String
-    transcriptionId String @unique
+    file            File?      @relation(fields: [fileId], references: [id])
+    format          FileFormat @default(audio)
+    fileId          String?    @unique
+    mediaURL        String? //for apiMedia
+    transcriptionId String     @unique
+}
+
+model File {
+    id       String    @id @default(cuid())
+    url      String
+    subtitle Subtitle?
+}
+
+enum FileFormat {
+    audio
+    video
 }

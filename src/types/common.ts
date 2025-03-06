@@ -15,3 +15,13 @@ export interface PageIDParams {
         id: string
     },
 }
+
+export interface DBFile {
+    id: string
+    url: string
+}
+
+export interface PageProps {
+    searchParams: { [key: string]: string | undefined },
+    // [rest: string]: any
+  }

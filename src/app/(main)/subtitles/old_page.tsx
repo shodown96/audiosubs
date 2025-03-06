@@ -1,7 +1,7 @@
 
 "use client"
 import { getSpeakers } from '@/actions/generate-srt'
-import { getSRTs } from '@/actions/get-subtitles'
+import { getSRTs } from '@/actions/subtitles/get-subtitles'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { PATHS } from '@/lib/constants'

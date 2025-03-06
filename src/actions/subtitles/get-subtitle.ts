@@ -1,16 +1,17 @@
 "use server"
 
 import prisma from "@/lib/prisma"
+import { ClientSubtitle } from "@/types/subtitles"
 import { auth } from "@clerk/nextjs/server"
-import { Subtitle } from "@prisma/client"
 
-export const getSubtitle = async ({ id }: { id: string }): Promise<Subtitle | null> => {
+export const getSubtitle = async ({ id }: { id: string }): Promise<ClientSubtitle | null> => {
     try {
-        const { userId }: { userId: string | null } = auth()
+        const { userId }: { userId: string | null } = await auth()
         if (!userId) throw new Error("No user found")
 
         const subtitle = await prisma.subtitle.findUnique({
             where: { id },
+            include: { file: true }
         })
         return subtitle;
     } catch (error) {

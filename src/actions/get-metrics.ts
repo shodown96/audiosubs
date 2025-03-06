@@ -5,7 +5,7 @@ import { auth, clerkClient } from "@clerk/nextjs/server"
 
 export const getMetrics = async () => {
     try {
-        const { userId }: { userId: string | null } = auth()
+        const { userId }: { userId: string | null }= await auth()
         if (!userId) throw new Error("No user found")
 
         const ownedSubtitles = await prisma.subtitle.count({
@@ -14,7 +14,7 @@ export const getMetrics = async () => {
         const subtitles = await prisma.subtitle.count({
             where: { userId },
         })
-        const client = clerkClient()
+        const client = await clerkClient()
         const users = (await client.users.getUserList()).totalCount
         return {
             users,
