@@ -8,7 +8,7 @@ export default clerkMiddleware(async (auth, request) => {
   if (!isPublicRoute(request)) {
     const { userId } = await auth()
     if (!userId) {
-      return NextResponse.redirect(`${originURL}/sign-in?nextURL=${request.url}`)
+      return NextResponse.redirect(`${originURL}/sign-in?nextURL=${request.nextUrl.pathname}`)
     }
   }
 })
