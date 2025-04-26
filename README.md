@@ -1,4 +1,4 @@
-# AudioSubs (WIP)
+# Mediasubs (WIP)
 
 A Speech-to-Text App that generates SRT subtitles.
 
